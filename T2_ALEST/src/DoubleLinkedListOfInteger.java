@@ -56,10 +56,68 @@ public class DoubleLinkedListOfInteger {
     }
 
     /**
+     * Adiciona um nodo ao final da lista.
+     * @param item
+    */
+    public void addFirst(Integer item){
+        Node newNode = new Node(item);
+        newNode.next = header.next;
+        newNode.prev = header;
+        header.next.prev = newNode;
+        header.next = newNode;
+        count++;
+    }
+
+    /**
+     * Adiciona um nodo em uma determina posição empurrando o nodo que estava naquela posição e o resto da lista.
+     * @param item
+     * @param pos
+    */
+    public void addAt(Integer item, int pos){
+        Node newNode = new Node(item);
+        if(pos == 1){
+            addFirst(item);
+        }else if(pos == count){
+            add(item);
+        }else{
+            current = header.next;
+            for(int i = 0; i < pos - 1; i++){
+                current = current.next;
+            }
+            newNode.next = current;
+            newNode.prev = current.prev;
+            current.prev = newNode;
+            count++;
+        }
+    }
+
+    /**
+     * Adiciona um nodo em um determinado lugar da lista sobreescrevendo o nodo que estava naquela posição.
+     * @param item
+     * @param pos
+     * @return item que estava anteriormente na posição
+    */
+    public Integer set(Integer item, int pos){
+        if(pos>count){
+            throw new IndexOutOfBoundsException("Posição "+pos+" não existe na lista.");
+        }
+        current = header.next;
+        Integer resposta = header.item;
+        while(current.item!= null){
+            for(int i = 0; i < pos - 1; i++){
+                current = current.next;
+            }
+            resposta = current.item;
+            current.item = item;
+        }
+        return resposta;
+    }
+
+    /**
      * Remove o último nodo da lista.
      * @return true se o nodo foi removido, false se não.
     */
-    public boolean removeLastNode(){
+    public boolean removeLast(){
         if(count == 0){
             return false;
         }
@@ -72,8 +130,8 @@ public class DoubleLinkedListOfInteger {
     /**
      * Remove o primeiro nodo da lista.
      * @return true se o nodo foi removido, false se não.
-     */
-    public boolean removeFirstNode(){
+    */
+    public boolean removeFirst(){
         if(count == 0){
             return false;
         }
@@ -87,7 +145,7 @@ public class DoubleLinkedListOfInteger {
      * Remove um nodo da lista.
      * @param item item a ser removido da lista. 
      * @return true se foi removido, false se não.
-     */
+    */
     public boolean removeNode(Integer item){
         if(count > 0){
             current = header.next;
@@ -102,5 +160,44 @@ public class DoubleLinkedListOfInteger {
             }
         }
         return false;
+    }
+
+    /**
+     * Remove um nodo de uma determinada posição.
+     * @param item
+     * @param pos
+    */
+    public void removeAt(Integer item, int pos){
+        if(pos > count){
+            throw new IndexOutOfBoundsException("Posição "+pos+" não existe na lista.");
+        }
+        current = header.next;
+        while(current.item!= null){
+            for(int i = 0; i < pos - 1; i++){
+                current = current.next;
+            }
+            if(current.item.equals(item)){
+                current.prev.next = current.next;
+                current.next.prev = current.prev;
+                count--;
+            }
+            current = current.next;
+        }
+    }
+
+    /**
+     * Verifica se a lista está vazia, se sim retorna true se não retorna false.
+     * @return true ou false
+    */
+    public boolean isEmpty(){
+        return count == 0;
+    }
+
+    /**
+     * Retorna o tamanho da lista.
+     * @return count
+    */
+    public int getSize(){
+        return count;
     }
 }
