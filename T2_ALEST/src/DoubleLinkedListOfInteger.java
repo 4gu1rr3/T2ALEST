@@ -332,10 +332,38 @@ public class DoubleLinkedListOfInteger {
     }
 
     public void sort(){
-
+        current = header.next;
+        Node maior = current;
+        while(current.item!= null){
+            if(current.item>maior.item){
+                maior.prev.next = current;
+                current.prev.next = current.next;
+                current.next.prev = current.prev;
+                current.prev = maior.prev;
+                current.next = maior;
+                maior.prev = current;
+                maior = current;
+                current = current.next;
+            }
+            current = current.next;
+        }
     }
 
     public void reverse(){
-    
+        current = header.next;
+        Node aux = trailer.prev;
+        while(aux!=current && aux.prev != current && current.next != aux){
+            Node extraAux = current;
+            current.prev.next = aux;
+            aux.next.prev = current;
+            current.next.prev = aux;
+            aux.prev.next = current;
+            current.next = aux.next;
+            current.prev = aux.prev;
+            aux.prev = extraAux.prev;
+            aux.next = extraAux.next;
+            current = aux.next;
+            aux = current.prev;
+        }
     }    
 }
