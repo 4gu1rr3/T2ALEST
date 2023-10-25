@@ -200,4 +200,142 @@ public class DoubleLinkedListOfInteger {
     public int getSize(){
         return count;
     }
+
+    /**
+     * Verifica se um elemento está contido na lista.
+     * @param item elemento a ser verificado.
+     * @return True se o elemento está contido, False se não.
+     */
+    public boolean contains(Integer item){
+        if(count > 0){
+            current = header.next;
+            while(current.item!= null){
+                if(current.item.equals(item)){
+                    return true;
+                }
+                current = current.next;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Retorna a posição de um determinado elemento.
+     * @param item elemento a ser utilizado.
+     * @return Posição de um determinado elemento.
+     */
+    public int IndexOf(Integer item){
+        if(count > 0){
+            current = header.next;
+            int index = 1;
+            while(current.item!= null){
+                if(current.item.equals(item)){
+                    return index;
+                }
+                index++;
+                current = current.next;
+            }
+        }
+        return -1;
+    }
+
+    /**
+     * Limpa a lista.
+     */
+    public void clear(){
+        header.next = trailer;
+        trailer.prev = header;
+        count = 0;
+    }
+
+    /**
+     * Retorna o elemento em uma determinada posição.
+     * @param pos Posição a ser utilizada.
+     * @return O elemento.
+     */
+    public int get(int pos){
+        if(count == 0 || pos > count || pos < 0){
+            return -1;
+        }
+        current = header.next;
+        while(current.item!= null){
+            for(int i = 0; i < pos; i++){
+                current = current.next;
+            }
+        }
+        return current.item;
+    }
+
+    /**
+     * Remove todas as ocorrencias de um elemento.
+     * @param item Elemento a ser utilizado.
+     * @return True se removeu, false se não.
+     */
+    public boolean removeAll(Integer item){
+        boolean removed = false;
+        if(count == 0){
+            return false;
+        }
+        current = header.next;
+        while(current.item!= null){
+            if(current.item.equals(item)){
+                current.prev.next = current.next;
+                current.next.prev = current.prev;
+                count--;
+                removed = true;
+            }
+            current = current.next;
+        }
+        return removed;
+    }
+
+    /**
+     * Retorna uma sublista criada a partir de dois indexes.
+     * @param fromIndex Index do primeiro elemento que será adicionado na sublista.
+     * @param toIndex Index de onde deve parar de adicionar elementos na sublista.
+     * @return Sublista.
+     */
+    public int[] subList(int fromIndex, int toIndex){
+        int[] subList = new int[toIndex];
+        if (count == 0){
+            return subList;
+        }
+        if(fromIndex<0 || toIndex >= count){
+            throw new IndexOutOfBoundsException("Posição não existe na lista. \n A lista vai da posição 0 até a posição "+(count-1)+".");
+        }
+        current = header.next;
+        for(int i = 0; i < fromIndex; i++){
+            current = current.next;
+        }
+        for(int i = 0; i < toIndex; i++){
+            subList[i] = current.item;
+            current = current.next;
+        }
+        return subList;
+    }
+
+    /**
+     * Retorna a quantidade de ocorrencias de um determinado elemento dentro da lista.
+     * @param item elemento a ser utilizado.
+     * @return Quantidade de ocorrencias.
+     */
+    public int contaOcorrencias(int item){
+        int contador = 0;
+        current = header.next;
+        while(current.item!= null){
+            if(current.item.equals(item)){
+              contador++;  
+            }
+            current = current.next;
+        }
+        return contador;
+    }
+
+    public void sort(){
+
+    }
+
+    public void reverse(){
+    
+    }    
 }
